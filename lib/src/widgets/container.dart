@@ -73,7 +73,9 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
     super.initState();
     if (!mounted) return;
     _status = widget.status;
-    _alignment = EasyLoadingTheme.alignment(widget.toastPosition);
+    _alignment = (widget.status?.isNotEmpty == true)
+        ? AlignmentDirectional.center
+        : EasyLoadingTheme.alignment(widget.toastPosition);
     _dismissOnTap =
         widget.dismissOnTap ?? (EasyLoadingTheme.dismissOnTap ?? false);
     _ignoring =
@@ -135,7 +137,7 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: AlignmentDirectional.topCenter,
+      alignment: _alignment,
       children: <Widget>[
         AnimatedBuilder(
           animation: _animationController,
@@ -168,9 +170,9 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
           builder: (BuildContext context, Widget? child) {
             return EasyLoadingTheme.loadingAnimation.buildWidget(
               _Indicator(
-                status: _status,
-                indicator: widget.indicator,
-              ),
+                  status: _status,
+                  indicator: widget.indicator,
+                  top: widget.toastPosition == EasyLoadingToastPosition.top),
               _animationController,
               _alignment,
             );
@@ -184,16 +186,18 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
 class _Indicator extends StatelessWidget {
   final Widget? indicator;
   final String? status;
+  final bool top;
 
   const _Indicator({
     required this.indicator,
     required this.status,
+    required this.top,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(50.0),
+      margin: EdgeInsets.all(top ? 64.0 : 50.0),
       decoration: BoxDecoration(
         color: EasyLoadingTheme.backgroundColor,
         borderRadius: BorderRadius.circular(
@@ -209,9 +213,7 @@ class _Indicator extends StatelessWidget {
         children: <Widget>[
           if (indicator != null)
             Container(
-              margin: status?.isNotEmpty == true
-                  ? EasyLoadingTheme.textPadding
-                  : EdgeInsets.zero,
+              margin: EdgeInsets.zero,
               child: indicator,
             ),
           if (status != null)

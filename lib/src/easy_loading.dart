@@ -258,6 +258,7 @@ class EasyLoading {
       maskType: maskType,
       dismissOnTap: dismissOnTap,
       w: w,
+      toastPosition: EasyLoadingToastPosition.top,
     );
   }
 
