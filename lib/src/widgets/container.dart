@@ -205,7 +205,8 @@ class _Indicator extends StatelessWidget {
         ),
         boxShadow: EasyLoadingTheme.boxShadow,
       ),
-      padding: EasyLoadingTheme.contentPadding,
+      padding:
+          status != null ? EdgeInsets.all(18) : EasyLoadingTheme.contentPadding,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,7 +214,9 @@ class _Indicator extends StatelessWidget {
         children: <Widget>[
           if (indicator != null)
             Container(
-              margin: EdgeInsets.zero,
+              margin: status?.isNotEmpty == true
+                  ? EdgeInsets.only(bottom: 8)
+                  : EdgeInsets.zero,
               child: indicator,
             ),
           if (status != null)
