@@ -135,7 +135,7 @@ class EasyLoadingContainerState extends State<EasyLoadingContainer>
   @override
   Widget build(BuildContext context) {
     return Stack(
-      alignment: _alignment,
+      alignment: AlignmentDirectional.topCenter,
       children: <Widget>[
         AnimatedBuilder(
           animation: _animationController,
